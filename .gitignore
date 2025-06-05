@@ -1,48 +1,24 @@
-# Node
-node_modules/
-
-# Build
-build/
-dist/
-
 # Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Mac
-.DS_Store
-
-# Env
-.env
-.env.*
-
-# VSCode
-.vscode/
-
-# React
+node_modules
+dist
+dist-ssr
 *.local
 
-# Coverage
-coverage/
-
-# Others
-*.log
-*.tmp
-
-# OS
-Thumbs.db
-
-# IDE
-.idea/
-*.iml
-
-# Misc
-*.swp
-
-# Ignore local dev output
-src/.env
-src/node_modules/
-src/build/
-src/dist/
-src/coverage/
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
