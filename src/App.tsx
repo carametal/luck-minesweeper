@@ -22,19 +22,24 @@ function App() {
 
   const { width, height } = LEVELS[level]
 
-  useEffect(() => {
-    const newBoard = Array.from({ length: height }, () =>
-      Array.from({ length: width }, () => ({ opened: false, flagged: false })),
+  const initBoard = (lvl: number) => {
+    const { width: w, height: h } = LEVELS[lvl]
+    const newBoard = Array.from({ length: h }, () =>
+      Array.from({ length: w }, () => ({ opened: false, flagged: false })),
     )
     setBoard(newBoard)
     setState('playing')
     setSafePos([
-      Math.floor(Math.random() * width),
-      Math.floor(Math.random() * height),
+      Math.floor(Math.random() * w),
+      Math.floor(Math.random() * h),
     ])
-  }, [level, width, height])
+  }
 
-  const reset = () => setLevel((prev) => prev)
+  useEffect(() => {
+    initBoard(level)
+  }, [level])
+
+  const reset = () => initBoard(level)
 
   const nextLevel = () => setLevel((prev) => (prev + 1) % LEVELS.length)
 
