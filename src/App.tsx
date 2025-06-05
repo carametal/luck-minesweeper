@@ -1,34 +1,124 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+interface CellState {
+  opened: boolean
+  flagged: boolean
+}
+
+const LEVELS = [
+  { width: 1, height: 2 },
+  { width: 2, height: 2 },
+  { width: 3, height: 3 },
+  { width: 4, height: 4 },
+  { width: 5, height: 5 },
+]
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [level, setLevel] = useState(0)
+  const [board, setBoard] = useState<CellState[][]>([])
+  const [safePos, setSafePos] = useState<[number, number]>([0, 0])
+  const [state, setState] = useState<'playing' | 'won' | 'lost'>('playing')
+
+  const { width, height } = LEVELS[level]
+
+  useEffect(() => {
+    const newBoard = Array.from({ length: height }, () =>
+      Array.from({ length: width }, () => ({ opened: false, flagged: false })),
+    )
+    setBoard(newBoard)
+    setState('playing')
+    setSafePos([
+      Math.floor(Math.random() * width),
+      Math.floor(Math.random() * height),
+    ])
+  }, [level, width, height])
+
+  const reset = () => setLevel((prev) => prev)
+
+  const nextLevel = () => setLevel((prev) => (prev + 1) % LEVELS.length)
+
+  const countAdjacent = (x: number, y: number) => {
+    let count = 0
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (dx === 0 && dy === 0) continue
+        const nx = x + dx
+        const ny = y + dy
+        if (nx >= 0 && nx < width && ny >= 0 && ny < height) count++
+      }
+    }
+    return count
+  }
+
+  const open = (x: number, y: number) => {
+    if (state !== 'playing') return
+    const newBoard = board.map((row) => row.map((c) => ({ ...c })))
+    const cell = newBoard[y][x]
+    if (cell.opened || cell.flagged) return
+    cell.opened = true
+
+    if (x === safePos[0] && y === safePos[1]) {
+      setState('won')
+    } else {
+      setState('lost')
+      for (let j = 0; j < height; j++) {
+        for (let i = 0; i < width; i++) {
+          if (!(i === safePos[0] && j === safePos[1])) {
+            newBoard[j][i].opened = true
+          }
+        }
+      }
+    }
+    setBoard(newBoard)
+  }
+
+  const toggleFlag = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    x: number,
+    y: number,
+  ) => {
+    e.preventDefault()
+    if (state !== 'playing') return
+    const newBoard = board.map((row) => row.map((c) => ({ ...c })))
+    const cell = newBoard[y][x]
+    if (cell.opened) return
+    cell.flagged = !cell.flagged
+    setBoard(newBoard)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="game">
+      <div
+        className="board"
+        style={{ gridTemplateColumns: `repeat(${width}, 40px)` }}
+      >
+        {board.map((row, y) =>
+          row.map((cell, x) => (
+            <div
+              key={`${x}-${y}`}
+              className={`cell${cell.opened ? ' opened' : ''}`}
+              onClick={() => open(x, y)}
+              onContextMenu={(e) => toggleFlag(e, x, y)}
+            >
+              {cell.opened
+                ? x === safePos[0] && y === safePos[1]
+                  ? countAdjacent(x, y) || ''
+                  : '💣'
+                : cell.flagged
+                ? '⚑'
+                : ''}
+            </div>
+          )),
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className="buttons">
+        <button onClick={reset}>RESET</button>
+        {state === 'won' && <button onClick={nextLevel}>NEXT LEVEL</button>}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      {state === 'won' && <p>Clear!</p>}
+      {state === 'lost' && <p>Game Over</p>}
+    </div>
   )
 }
 
