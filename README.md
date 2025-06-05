@@ -18,3 +18,4 @@ npm run dev
 - Open the single safe cell to clear the level. Opening a bomb ends the game.
 - After clearing a level, press **NEXT LEVEL** to advance.
 - The **RESET** button appears only after a game over to restart the current level.
+- Level 5 is labeled as the final stage.

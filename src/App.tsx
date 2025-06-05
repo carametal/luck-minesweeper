@@ -94,7 +94,10 @@ function App() {
 
   return (
     <div className="game">
-      <p className="level-info">Level {level + 1}</p>
+      <p className="level-info">
+        Level {level + 1}
+        {level === LEVELS.length - 1 && ' (Final Stage)'}
+      </p>
       <div
         className="board"
         style={{ gridTemplateColumns: `repeat(${width}, 40px)` }}
@@ -123,7 +126,11 @@ function App() {
         {state === 'won' && <button onClick={nextLevel}>NEXT LEVEL</button>}
       </div>
       {state === 'won' && (
-        <p className="clear-message">Level {level + 1} Clear!</p>
+        <p className="clear-message">
+          {level === LEVELS.length - 1
+            ? 'All Levels Cleared!'
+            : `Level ${level + 1} Clear!`}
+        </p>
       )}
       {state === 'lost' && <p className="game-over">Game Over</p>}
     </div>
