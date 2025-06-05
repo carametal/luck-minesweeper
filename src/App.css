@@ -63,3 +63,9 @@
   color: #333;
   margin-top: 1rem;
 }
+
+.play-again {
+  font-size: 1.25rem;
+  padding: 0.8rem 1.6rem;
+  background: linear-gradient(135deg, #42e695 0%, #3bb2b8 100%);
+}

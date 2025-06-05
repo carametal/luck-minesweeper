@@ -123,7 +123,14 @@ function App() {
       </div>
       <div className="buttons">
         {state === 'lost' && <button onClick={reset}>RESET</button>}
-        {state === 'won' && <button onClick={nextLevel}>NEXT LEVEL</button>}
+        {state === 'won' &&
+          (level === LEVELS.length - 1 ? (
+            <button className="play-again" onClick={nextLevel}>
+              Play Again!!
+            </button>
+          ) : (
+            <button onClick={nextLevel}>NEXT LEVEL</button>
+          ))}
       </div>
       {state === 'won' && (
         <p className="clear-message">
