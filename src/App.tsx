@@ -108,27 +108,32 @@ function App() {
         Level {level + 1}
         {level === LEVELS.length - 1 && ' (Final Stage)'}
       </p>
-      <div
-        className="board"
-        style={{ gridTemplateColumns: `repeat(${width}, 40px)` }}
-      >
-        {board.map((row, y) =>
-          row.map((cell, x) => (
-            <div
-              key={`${x}-${y}`}
-              className={`cell${cell.opened ? ' opened' : ''}`}
-              onClick={() => open(x, y)}
-              onContextMenu={(e) => toggleFlag(e, x, y)}
-            >
-              {cell.opened
-                ? x === safePos[0] && y === safePos[1]
-                  ? countAdjacent(x, y) || ''
-                  : '💣'
-                : cell.flagged
-                ? '⚑'
-                : ''}
-            </div>
-          )),
+      <div className="board-wrapper">
+        <div
+          className="board"
+          style={{ gridTemplateColumns: `repeat(${width}, 40px)` }}
+        >
+          {board.map((row, y) =>
+            row.map((cell, x) => (
+              <div
+                key={`${x}-${y}`}
+                className={`cell${cell.opened ? ' opened' : ''}`}
+                onClick={() => open(x, y)}
+                onContextMenu={(e) => toggleFlag(e, x, y)}
+              >
+                {cell.opened
+                  ? x === safePos[0] && y === safePos[1]
+                    ? countAdjacent(x, y) || ''
+                    : '💣'
+                  : cell.flagged
+                  ? '⚑'
+                  : ''}
+              </div>
+            )),
+          )}
+        </div>
+        {state === 'won' && level === LEVELS.length - 1 && (
+          <p className="clear-message overlay">All Levels Cleared!</p>
         )}
       </div>
       <div className="buttons">
@@ -142,12 +147,8 @@ function App() {
             <button onClick={nextLevel}>NEXT LEVEL</button>
           ))}
       </div>
-      {state === 'won' && (
-        <p className="clear-message">
-          {level === LEVELS.length - 1
-            ? 'All Levels Cleared!'
-            : `Level ${level + 1} Clear!`}
-        </p>
+      {state === 'won' && level !== LEVELS.length - 1 && (
+        <p className="clear-message">Level {level + 1} Clear!</p>
       )}
       {state === 'lost' && <p className="game-over">Game Over</p>}
     </div>
