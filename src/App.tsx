@@ -147,7 +147,11 @@ function App() {
           )}
         </div>
         {state === 'won' && level === LEVELS.length - 1 && (
-          <p className="clear-message overlay">全レベルクリア！</p>
+          <p className="clear-message overlay">
+            全レベル
+            <br />
+            クリア
+          </p>
         )}
       </div>
       <div className="buttons">
