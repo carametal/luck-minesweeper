@@ -15,6 +15,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.board-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .cell {
   width: 40px;
   height: 40px;
@@ -56,6 +61,18 @@
   font-size: 2rem;
   color: #ff5f6d;
   margin-top: 1rem;
+}
+
+.clear-message.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 0;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  pointer-events: none;
 }
 
 .game-over {
