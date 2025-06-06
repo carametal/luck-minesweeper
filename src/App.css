@@ -91,9 +91,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .intro-text {
   font-size: 1.2rem;
+  margin: 0;
 }
