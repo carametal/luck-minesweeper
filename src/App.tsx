@@ -47,18 +47,6 @@ function App() {
 
   const nextLevel = () => setLevel((prev) => (prev + 1) % LEVELS.length)
 
-  const countAdjacent = (x: number, y: number) => {
-    let count = 0
-    for (let dy = -1; dy <= 1; dy++) {
-      for (let dx = -1; dx <= 1; dx++) {
-        if (dx === 0 && dy === 0) continue
-        const nx = x + dx
-        const ny = y + dy
-        if (nx >= 0 && nx < width && ny >= 0 && ny < height) count++
-      }
-    }
-    return count
-  }
 
   const open = (x: number, y: number) => {
     if (state !== 'playing') return
@@ -136,7 +124,7 @@ function App() {
               >
                 {cell.opened
                   ? x === safePos[0] && y === safePos[1]
-                    ? countAdjacent(x, y) || ''
+                    ? '✅'
                     : '💣'
                   : cell.flagged
                   ? '⚑'
