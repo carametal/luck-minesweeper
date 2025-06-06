@@ -15,6 +15,7 @@ const LEVELS = [
 ]
 
 function App() {
+  const isTest = new URLSearchParams(window.location.search).get('test') === 'true'
   const [level, setLevel] = useState(0)
   const [board, setBoard] = useState<CellState[][]>([])
   const [safePos, setSafePos] = useState<[number, number]>([0, 0])
@@ -62,14 +63,16 @@ function App() {
     const cell = newBoard[y][x]
     if (cell.opened || cell.flagged) return
     cell.opened = true
+    const targetSafe: [number, number] = isTest ? [x, y] : safePos
 
-    if (x === safePos[0] && y === safePos[1]) {
+    if (x === targetSafe[0] && y === targetSafe[1]) {
+      if (isTest) setSafePos(targetSafe)
       setState('won')
     } else {
       setState('lost')
       for (let j = 0; j < height; j++) {
         for (let i = 0; i < width; i++) {
-          if (!(i === safePos[0] && j === safePos[1])) {
+          if (!(i === targetSafe[0] && j === targetSafe[1])) {
             newBoard[j][i].opened = true
           }
         }

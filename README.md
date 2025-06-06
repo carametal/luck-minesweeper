@@ -20,3 +20,4 @@ npm run dev
 - The **RESET** button appears only after a game over to restart the current level.
 - Level 5 is labeled as the final stage.
 - After clearing the final stage, press **Play Again!!** to restart from level 1.
+- Add `?test=true` to the URL for a mode where the first opened cell is always safe.
