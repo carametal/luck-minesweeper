@@ -108,9 +108,8 @@ function App() {
   if (!started) {
     return (
       <div className="game intro">
-        <p className="intro-text">
-          各レベルで唯一安全なマスを開いてください。右クリックでフラグを立てます。
-        </p>
+        <p className="intro-text">各レベルで安全なマスが1つだけあります。</p>
+        <p className="intro-text">爆弾を避けてそのマスを見つけましょう。右クリックでフラグを立てられます。</p>
         <button onClick={() => setStarted(true)}>スタート</button>
       </div>
     )
