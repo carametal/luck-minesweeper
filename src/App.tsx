@@ -68,6 +68,13 @@ function App() {
     if (x === targetSafe[0] && y === targetSafe[1]) {
       if (isTest) setSafePos(targetSafe)
       setState('won')
+      for (let j = 0; j < height; j++) {
+        for (let i = 0; i < width; i++) {
+          if (!(i === targetSafe[0] && j === targetSafe[1])) {
+            newBoard[j][i].opened = true
+          }
+        }
+      }
     } else {
       setState('lost')
       for (let j = 0; j < height; j++) {
