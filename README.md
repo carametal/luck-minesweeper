@@ -16,6 +16,7 @@ npm run dev
 
 - Left click a cell to open it. Right click to place or remove a flag.
 - Open the single safe cell to clear the level. Opening a bomb ends the game.
+- The safe cell shows a green check mark when opened.
 - After clearing a level, press **NEXT LEVEL** to advance.
 - The **RESET** button appears only after a game over to restart the current level.
 - Level 5 is labeled as the final stage.
