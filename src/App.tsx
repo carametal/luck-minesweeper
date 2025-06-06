@@ -16,6 +16,7 @@ const LEVELS = [
 
 function App() {
   const isTest = new URLSearchParams(window.location.search).get('test') === 'true'
+  const [started, setStarted] = useState(false)
   const [level, setLevel] = useState(0)
   const [board, setBoard] = useState<CellState[][]>([])
   const [safePos, setSafePos] = useState<[number, number]>([0, 0])
@@ -37,8 +38,10 @@ function App() {
   }
 
   useEffect(() => {
-    initBoard(level)
-  }, [level])
+    if (started) {
+      initBoard(level)
+    }
+  }, [level, started])
 
   const reset = () => initBoard(level)
 
@@ -102,11 +105,21 @@ function App() {
     setBoard(newBoard)
   }
 
+  if (!started) {
+    return (
+      <div className="game intro">
+        <p className="intro-text">各レベルで安全なマスが1つだけあります。</p>
+        <p className="intro-text">爆弾を避けてそのマスを見つけましょう。</p>
+        <button onClick={() => setStarted(true)}>スタート</button>
+      </div>
+    )
+  }
+
   return (
     <div className="game">
       <p className="level-info">
-        Level {level + 1}
-        {level === LEVELS.length - 1 && ' (Final Stage)'}
+        レベル {level + 1}
+        {level === LEVELS.length - 1 && '（最終ステージ）'}
       </p>
       <div className="board-wrapper">
         <div
@@ -133,24 +146,28 @@ function App() {
           )}
         </div>
         {state === 'won' && level === LEVELS.length - 1 && (
-          <p className="clear-message overlay">All Levels Cleared!</p>
+          <p className="clear-message overlay">
+            全レベル
+            <br />
+            クリア
+          </p>
         )}
       </div>
       <div className="buttons">
-        {state === 'lost' && <button onClick={reset}>RESET</button>}
+        {state === 'lost' && <button onClick={reset}>リセット</button>}
         {state === 'won' &&
           (level === LEVELS.length - 1 ? (
             <button className="play-again" onClick={nextLevel}>
-              Play Again!!
+              もう一度遊ぶ!!
             </button>
           ) : (
-            <button onClick={nextLevel}>NEXT LEVEL</button>
+            <button onClick={nextLevel}>次のレベル</button>
           ))}
       </div>
       {state === 'won' && level !== LEVELS.length - 1 && (
-        <p className="clear-message">Level {level + 1} Clear!</p>
+        <p className="clear-message">レベル {level + 1} クリア！</p>
       )}
-      {state === 'lost' && <p className="game-over">Game Over</p>}
+      {state === 'lost' && <p className="game-over">ゲームオーバー</p>}
     </div>
   )
 }
